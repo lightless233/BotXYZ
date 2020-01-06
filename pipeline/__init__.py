@@ -14,3 +14,4 @@
 """
 
 from .ThumbBanPipeline import ThumbBanPipeline
+from .RepeatBanPipeline import RepeatBanPipeline

@@ -14,6 +14,7 @@
 """
 
 from cqplus._api import CQPlusApi
+from cqplus._logging import CQPlusLogging
 
 from utils import utils
 from ._base import BasePipeline
@@ -21,11 +22,12 @@ from ._base import BasePipeline
 
 class ThumbBanPipeline(BasePipeline):
 
-    def __init__(self, api):
-        super(ThumbBanPipeline, self).__init__()
+    def __init__(self, api, logger):
+        super(ThumbBanPipeline, self).__init__(api, logger)
         self.name = "ThumbBan-pipeline"
 
-        self.api: CQPlusApi = api
+        # self.api: CQPlusApi = api
+        # self.logger: CQPlusLogging = logger
 
         self.THUMBS_ID = [
             "[CQ:emoji,id=128077]",

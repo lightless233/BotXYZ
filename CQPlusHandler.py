@@ -22,8 +22,6 @@ import pipeline
 from CommandHandler import CommandHandler
 from pipeline._base import BasePipeline
 
-db_conn = sqlite3.connect(constant.DEV_DB_NAME)
-
 
 class MainHandler(cqplus.CQPlusHandler):
 
@@ -33,8 +31,12 @@ class MainHandler(cqplus.CQPlusHandler):
         self.commandHandler = CommandHandler(self.api, self.logging)
 
         self.pipelines: List[BasePipeline] = [
-            pipeline.ThumbBanPipeline(self.api)
+            pipeline.ThumbBanPipeline(self.api, self.logging),
+            pipeline.RepeatBanPipeline(self.api, self.logging),
         ]
+
+        # db 连接
+        self.db = sqlite3.connect(constant.DEV_DB_NAME)
 
     def info(self, msg):
         self.logging.info(self.TAG + " " + msg)
