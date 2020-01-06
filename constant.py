@@ -18,7 +18,7 @@ TARGET_GROUP = [
 ]
 
 ADMIN_QQ = [
-    "387210935", "2522031536"
+    387210935, 2522031536
 ]
 
 DEV_DB_NAME = "xyz_dev.db"

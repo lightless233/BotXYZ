@@ -85,15 +85,5 @@ class MainHandler(cqplus.CQPlusHandler):
         else:
             pass
 
-        # 判断是否为指令
-        # if ("[CQ:at,qq=2522031536]" in clean_msg):
-        #     command_msg = clean_msg.replace("[CQ:at,qq=2522031536]", "")
-        #     if command_msg.startswith("#init_db"):
-        #         self.commandHandler.init_db(from_qq, from_group)
-        #     else:
-        #         self.api.send_group_msg(group_id=from_group, msg=utils.get_at_msg(from_qq) + "Unknown Command.")
-
-        # 封禁大拇指
-        # self.commandHandler.ban_thumb(from_qq, msg, from_group)
         for pipeline in self.pipelines:
             pipeline.process(msg, from_qq, from_group)
