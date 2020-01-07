@@ -126,6 +126,7 @@ class CommandHandler:
         if duration < 0:
             self.api.send_group_msg(from_group, at_attacker_qq_msg + "\n你再乱搞试试？")
             self.api.set_group_ban(from_group, from_qq, 60)
+            return
 
 
         # 如果这个傻子要打自己
@@ -175,6 +176,8 @@ class CommandHandler:
             self.api.send_group_msg(from_group, base_msg)
             self.api.set_group_ban(from_group, from_qq, duration * 60 / 2)
             return
+
+        # todo: 处理一下roll到0点的情况
 
         # 正常情况了，开始计算攻击者的debuff
         # 重新生成base_msg
