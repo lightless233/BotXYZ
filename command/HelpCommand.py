@@ -19,6 +19,25 @@ from cqplus._logging import CQPlusLogging
 
 from ._base import BaseCommand
 
+help_msg = """
+BotXYZ version 1.0.1
+
+--- 普通命令 ---
+%help - 显示这个页面
+%attack - 攻击某个玩家，格式：%attack @目标 时长(分钟)
+---------------
+
+--- Admin命令 ---
+%ban - 干掉指定人，格式：%ban @目标 时长(分钟)
+%unban - 解封指定人，格式：%unban @目标
+---------------
+
+--- 其他信息 ---
+项目地址：https://github.com/lightless233/BotXYZ
+Bug、Request报告地址：https://github.com/lightless233/BotXYZ/issues
+---------------
+"""
+
 
 class HelpCommand(BaseCommand):
 
@@ -28,14 +47,4 @@ class HelpCommand(BaseCommand):
         self.command_name = "%help"
 
     def process(self, from_group: int, from_qq: int, command_list: List[str]):
-        help_msg = "BotXYZ version 1.0.0\n\n" \
-                   "命令列表:\n" \
-                   "%help - 显示这个页面\n" \
-                   "\n" \
-                   "%attack - 攻击某个玩家\n" \
-                   "格式：%attack @目标 时长(分钟)" \
-                   "\n\n" \
-                   "项目地址(coming soon!)：https://github.com/lightless233/BotXYZ\n" \
-                   "Bug、Request报告地址：https://github.com/lightless233/BotXYZ/issues"
-
         self.api.send_group_msg(group_id=from_group, msg=help_msg)

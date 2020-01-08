@@ -20,7 +20,7 @@ import cqplus._api
 
 import constant
 import pipeline
-from command import BaseCommand, BanCommand, UnBanCommand, AttackCommand
+from command import BaseCommand, BanCommand, UnBanCommand, AttackCommand, ChangelogCommand
 from command import HelpCommand
 from pipeline import BasePipeline
 from utils import utils
@@ -42,7 +42,7 @@ class MainHandler(cqplus.CQPlusHandler):
             "%ban": BanCommand(self.api, self.logging),
             "%unban": UnBanCommand(self.api, self.logging),
             "%attack": AttackCommand(self.api, self.logging),
-
+            "%changelog": ChangelogCommand(self.api, self.logging),
         }
 
         # db 连接

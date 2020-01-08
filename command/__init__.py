@@ -18,3 +18,4 @@ from .HelpCommand import HelpCommand
 from .BanCommand import BanCommand
 from .UnBanCommand import UnBanCommand
 from .AttackCommand import AttackCommand
+from .ChangeLogCommand import ChangelogCommand
