@@ -20,8 +20,7 @@ from cqplus._logging import CQPlusLogging
 from command import BaseCommand
 
 
-changelog = \
-"""
+changelog = """
 v1.0.1
 - 削弱%attack时的见切机制
 - 削弱%attack时的debuff效果
