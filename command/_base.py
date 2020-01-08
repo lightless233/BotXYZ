@@ -32,7 +32,7 @@ class BaseCommand:
         self.api = api
         self.logger = logger
 
-    def __check_admin(self, from_group, from_qq) -> bool:
+    def _check_admin(self, from_group, from_qq) -> bool:
         if from_qq not in constant.ADMIN_QQ:
             at_msg = utils.build_at_msg(from_qq)
             self.api.send_group_msg(from_group, at_msg + "\n您还不是管理员呢！")

@@ -12,6 +12,6 @@
     :license:   GPL-3.0, see LICENSE for more details.
     :copyright: Copyright (c) 2017-2020 lightless. All rights reserved
 """
-
+from ._base import BasePipeline
 from .ThumbBanPipeline import ThumbBanPipeline
 from .RepeatBanPipeline import RepeatBanPipeline

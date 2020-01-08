@@ -38,7 +38,7 @@ class CommandHandler:
         command_list = msg.split(" ")
         command = command_list[0]
 
-        if command == "%help":
+        if command == "%helpxxxx":
             self.help(from_group, from_qq)
         elif command == "%ban":
             self.ban(from_group, from_qq, command_list)
@@ -128,7 +128,6 @@ class CommandHandler:
             self.api.set_group_ban(from_group, from_qq, 60)
             return
 
-
         # 如果这个傻子要打自己
         if int(real_target) == from_qq:
             self.api.set_group_ban(from_group, from_qq, duration * 60)
@@ -181,33 +180,45 @@ class CommandHandler:
 
         # 正常情况了，开始计算攻击者的debuff
         # 重新生成base_msg
-        if duration >= 30:
-            final_attacker_pt = math.floor(attacker_pt - (duration * 0.75 + 20))
-        elif duration < 10:
-            final_attacker_pt = math.floor(attacker_pt - (duration / 2))
-        else:
-            final_attacker_pt = math.floor(attacker_pt - (duration * 1.875 - 13.75))
+        # if duration >= 30:
+        #     final_attacker_pt = math.floor(attacker_pt - (duration * 0.75 + 20))
+        # elif duration < 10:
+        #     final_attacker_pt = math.floor(attacker_pt - (duration / 2))
+        # else:
+        #     final_attacker_pt = math.floor(attacker_pt - (duration * 1.875 - 13.75))
+        final_attacker_pt = math.floor(attacker_pt - (duration / 2))
 
         base_msg = at_attacker_qq_msg + f"的点数：{attacker_pt}，叠加debuff后的点数：{final_attacker_pt}\n"
         base_msg += at_target_qq_msg + f"的点数：{target_pt}\n"
+        can_counter = False
         if final_attacker_pt > target_pt:
             # 攻击成功
             base_msg += at_attacker_qq_msg + "的攻击得手了！"
             self.api.set_group_ban(from_group, real_target, duration * 60)
             self.api.send_group_msg(from_group, base_msg)
-        else:
+            attack_success = False
+        elif final_attacker_pt < target_pt:
             # 攻击失败
             base_msg += at_attacker_qq_msg + "手滑了，啥也没打到。"
             self.api.send_group_msg(from_group, base_msg)
-            pass
+            can_counter = True
+        else:
+            # 相等了
+            base_msg += "旗鼓相当的对手，两败俱伤，伤害均摊。"
+            self.api.send_group_msg(from_group, base_msg)
+            self.api.set_group_ban(from_group, real_target, duration / 2  * 60)
+            self.api.set_group_ban(from_group, from_qq, duration / 2  * 60)
+            can_counter = False
 
         # 开始反击判定
-        counter_attack_pt = math.floor(random.randint(0, 100) * 0.85)
+        if not can_counter:
+            return
+        counter_attack_pt = math.floor(random.randint(0, 100) * 0.9)
         self.logger.info(f"[XYZ] counter_attack_pt: {counter_attack_pt}")
         if counter_attack_pt > final_attacker_pt:
             # 反击成功
             self.api.send_group_msg(from_group, at_target_qq_msg + f"见切成功！斩于马下！反击值：{counter_attack_pt}")
-            self.api.set_group_ban(from_group, from_qq, duration * 60 / 2)
+            self.api.set_group_ban(from_group, from_qq, duration * 60 * 0.2)
         else:
             # 反击失败
             self.api.send_group_msg(from_group, at_target_qq_msg + f"反击失败了，真可惜。反击值：{counter_attack_pt}")
