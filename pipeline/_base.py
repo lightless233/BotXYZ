@@ -30,5 +30,5 @@ class BasePipeline:
         self.logger: CQPlusLogging = logger
 
     @abc.abstractmethod
-    def process(self, msg, from_qq, from_group):
+    def process(self, msg: str, from_qq: int, from_group: int) -> bool:
         pass

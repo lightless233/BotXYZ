@@ -34,7 +34,7 @@ class RepeatBanPipeline(BasePipeline):
         # self.last_message = ""
         # self.repeat_count = 1
 
-    def process(self, msg, from_qq, from_group):
+    def process(self, msg: str, from_qq: int, from_group: int) -> bool:
 
         global last_message, repeat_count
 
@@ -52,14 +52,14 @@ class RepeatBanPipeline(BasePipeline):
         # 1次、2次 不禁言
         # 10次以上 100%禁言
         if repeat_count in (1, 2):
-            return
+            return True
 
         if repeat_count >= 10:
             self.api.set_group_ban(from_group, from_qq, 10)
 
             m = utils.build_at_msg(from_qq) + "\n您怕不是个复读机吧？\n劝你次根香蕉冷静冷静"
             self.api.send_group_msg(from_group, m)
-            return
+            return False
 
         # r = 1- (n-1)/n
         # n = 3 => r = 1/3
@@ -76,3 +76,6 @@ class RepeatBanPipeline(BasePipeline):
             m = utils.build_at_msg(from_qq) + "\n老哥被我抓住了吧？"
             self.api.send_group_msg(from_group, m)
             self.api.set_group_ban(from_group, from_qq, repeat_count * repeat_count / 2 * 60)
+            return False
+
+        return True

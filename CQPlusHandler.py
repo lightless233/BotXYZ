@@ -90,19 +90,23 @@ class MainHandler(cqplus.CQPlusHandler):
         self.info("receive message: " + msg + ", from: " + str(from_qq))
 
         # pipeline start #
-        # 如果是 % 开头的消息，认为是命令消息，否则就是普通的消息，走正常的pipeline进行处理
-        if msg.startswith("%"):
-            command_list = re.split(r"\s+", msg)
-            input_command_name = command_list[0]
-            command_instance: Optional[BaseCommand] = self.commands.get(input_command_name, None)
-            if command_instance is None:
-                self.commands.get("%help").process(from_group, from_qq, command_list=command_list)
-            else:
-                try:
-                    command_instance.process(from_group, from_qq, command_list)
-                except:
-                    self.api.send_group_msg(from_group, utils.build_at_msg(from_qq) + "\nUnknown Error!")
+        should_process_command = True
+        for _pipeline in self.pipelines:
+            if not _pipeline.process(msg, from_qq, from_group):
+                should_process_command = False
+                break
 
-        else:
-            for p in self.pipelines:
-                p.process(msg, from_qq, from_group)
+        if should_process_command:
+            # 如果是 % 开头的消息，认为是命令消息，否则就是普通的消息，走正常的pipeline进行处理
+            if msg.startswith("%"):
+                command_list = re.split(r"\s+", msg)
+                input_command_name = command_list[0]
+                command_instance: Optional[BaseCommand] = self.commands.get(input_command_name, None)
+                if command_instance is None:
+                    self.commands.get("%help").process(from_group, from_qq, command_list=command_list)
+                else:
+                    try:
+                        command_instance.process(from_group, from_qq, command_list)
+                    except:
+                        self.api.send_group_msg(from_group, utils.build_at_msg(from_qq) + "\nUnknown Error!")
+

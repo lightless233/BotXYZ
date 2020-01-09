@@ -36,9 +36,10 @@ class ThumbBanPipeline(BasePipeline):
             "[强]"
         ]
 
-    def process(self, msg: str, from_qq: int, from_group: int):
+    def process(self, msg: str, from_qq: int, from_group: int) -> bool:
         clean_msg = msg.replace(" ", "")
         for thumb in self.THUMBS_ID:
             if thumb in clean_msg:
                 self.api.set_group_ban(group_id=from_group, user_id=from_qq, duration=120)
                 self.api.send_group_msg(group_id=from_group, msg="发现大拇指！QNMD！\n" + utils.build_at_msg(from_qq))
+                return False
