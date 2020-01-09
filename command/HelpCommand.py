@@ -19,8 +19,7 @@ from cqplus._logging import CQPlusLogging
 
 from ._base import BaseCommand
 
-help_msg = """
-BotXYZ version 1.0.1
+help_msg = """BotXYZ version 1.0.1
 
 --- 普通命令 ---
 %help - 显示这个页面

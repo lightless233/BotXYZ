@@ -72,6 +72,10 @@ class AttackCommand(BaseCommand):
             self.api.send_group_msg(from_group, at_attacker_qq_msg + "\n你再乱搞试试？")
             self.api.set_group_ban(from_group, from_qq, 60)
             return
+        if duration == 0:
+            self.api.send_group_msg(from_group, at_attacker_qq_msg + "\n彩蛋已经修复咯！")
+            self.api.set_group_ban(from_group, from_qq, 60 * 60)
+            return
 
         # 如果这个傻子要打自己
         if int(real_target) == from_qq:
