@@ -43,3 +43,5 @@ class ThumbBanPipeline(BasePipeline):
                 self.api.set_group_ban(group_id=from_group, user_id=from_qq, duration=120)
                 self.api.send_group_msg(group_id=from_group, msg="发现大拇指！QNMD！\n" + utils.build_at_msg(from_qq))
                 return False
+
+        return True
