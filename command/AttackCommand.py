@@ -162,13 +162,19 @@ class AttackCommand(BaseCommand):
         # 开始反击判定
         if not can_counter:
             return
-        counter_attack_pt = math.floor(random.randint(0, 100) * 0.9)
+        # 临时patch，在大时长下增强见切概率
+        if duration >= 10 and duration <= 20:
+            counter_attack_pt = math.floor(random.randint(0, 100) * 1.2)
+        elif duration >= 20:
+            counter_attack_pt = math.floor(random.randint(0, 100) * 1.5)
+        else:
+            counter_attack_pt = math.floor(random.randint(0, 100) * 1.0)
         self.logger.info(f"[XYZ] counter_attack_pt: {counter_attack_pt}")
         if counter_attack_pt > final_attacker_pt:
             # 反击成功
             self.api.send_group_msg(from_group, at_target_qq_msg + f"见切成功！斩于马下！反击值：{counter_attack_pt}")
             # self.api.set_group_ban(from_group, from_qq, duration * 60 * 0.2)
-            self.ban(is_stake, from_group, from_qq, duration * 60 * 0.25)
+            self.ban(is_stake, from_group, from_qq, duration * 60 * 0.55)
         else:
             # 反击失败
             self.api.send_group_msg(from_group, at_target_qq_msg + f"反击失败了，真可惜。反击值：{counter_attack_pt}")
