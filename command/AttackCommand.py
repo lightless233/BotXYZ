@@ -140,7 +140,7 @@ class AttackCommand(BaseCommand):
         if duration >= 20:
             final_attacker_pt = math.floor(attacker_pt - (duration / 0.8))
         else:
-            final_attacker_pt = math.floor(attacker_pt - (duration / 1.5))
+            final_attacker_pt = math.floor(attacker_pt - (duration / 1.7))
 
         base_msg = at_attacker_qq_msg + f"的点数：{attacker_pt}，叠加debuff后的点数：{final_attacker_pt}\n"
         base_msg += at_target_qq_msg + f"的点数：{target_pt}\n"
@@ -170,9 +170,9 @@ class AttackCommand(BaseCommand):
             return
         # 临时patch，在大时长下增强见切概率
         if duration >= 10 and duration <= 20:
-            counter_attack_pt = math.floor(random.randint(0, 100) * 1.2)
+            counter_attack_pt = math.floor(random.randint(0, 100) * 1.0)
         elif duration >= 20:
-            counter_attack_pt = math.floor(random.randint(0, 100) * 1.5)
+            counter_attack_pt = math.floor(random.randint(0, 100) * 1.2)
         else:
             counter_attack_pt = math.floor(random.randint(0, 100) * 1.0)
         self.logger.info(f"[XYZ] counter_attack_pt: {counter_attack_pt}")
