@@ -35,11 +35,10 @@ class UnBanCommand(BaseCommand):
 
         try:
             target_qq = command_list[1]
-            duration = command_list[2]
         except IndexError:
             self.api.send_group_msg(
                 from_group,
-                utils.build_at_msg(from_qq) + "\nError arguments.\n%unban qq duration(min.)"
+                utils.build_at_msg(from_qq) + "\nError arguments.\n%unban qq"
             )
             return
 
