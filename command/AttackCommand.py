@@ -47,10 +47,13 @@ class AttackCommand(BaseCommand):
             return
 
         at_qq = utils.get_qq_from_at_msg(target_qq)
-        if at_qq is not None:
-            real_target = at_qq
-        else:
-            real_target = target_qq
+        if at_qq is None:
+            self.api.send_group_msg(
+                from_group,
+                utils.build_at_msg(from_qq) + "\nError arguments.\n%attack qq duration(min.)"
+            )
+            return
+        real_target = at_qq
 
         try:
             real_target = int(real_target)
