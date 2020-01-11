@@ -137,10 +137,7 @@ class AttackCommand(BaseCommand):
             return
 
         # todo: 处理一下roll到0点的情况
-        if duration >= 20:
-            final_attacker_pt = math.floor(attacker_pt - (duration / 0.8))
-        else:
-            final_attacker_pt = math.floor(attacker_pt - (duration / 1.7))
+        final_attacker_pt = math.floor(attacker_pt - (duration/60)*50*((random.randint(0, 10)+5)/20))
 
         base_msg = at_attacker_qq_msg + f"的点数：{attacker_pt}，叠加debuff后的点数：{final_attacker_pt}\n"
         base_msg += at_target_qq_msg + f"的点数：{target_pt}\n"
