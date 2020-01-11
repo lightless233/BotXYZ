@@ -32,6 +32,9 @@ class BaseCommand:
         self.api = api
         self.logger = logger
 
+        self.from_group: int = 0
+        self.from_qq: int = 0
+
     def _check_admin(self, from_group, from_qq) -> bool:
         if from_qq not in constant.ADMIN_QQ:
             at_msg = utils.build_at_msg(from_qq)
@@ -40,6 +43,9 @@ class BaseCommand:
             return False
         else:
             return True
+
+    def send_msg(self, msg):
+        self.api.send_group_msg(self.from_group, msg)
 
     @abc.abstractmethod
     def process(self, from_group: int, from_qq: int, command_list: List[str]):

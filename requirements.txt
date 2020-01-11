@@ -1,1 +1,2 @@
 cqplus-sdk==1.0.7
+peewee==3.13.1

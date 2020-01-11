@@ -13,7 +13,8 @@
     :copyright: Copyright (c) 2017-2020 lightless. All rights reserved
 """
 import re
-import sqlite3
+import sys
+import traceback
 from typing import List, Dict, Optional
 
 import cqplus._api
@@ -22,6 +23,7 @@ import constant
 import pipeline
 from command import BaseCommand, BanCommand, UnBanCommand, AttackCommand, ChangelogCommand
 from command import HelpCommand
+from command.game.GameCommand import GameCommand
 from pipeline import BasePipeline
 from utils import utils
 
@@ -43,10 +45,9 @@ class MainHandler(cqplus.CQPlusHandler):
             "%unban": UnBanCommand(self.api, self.logging),
             "%attack": AttackCommand(self.api, self.logging),
             "%changelog": ChangelogCommand(self.api, self.logging),
-        }
 
-        # db 连接
-        self.db = sqlite3.connect(constant.DEV_DB_NAME)
+            "%game": GameCommand(self.api, self.logging),
+        }
 
     def info(self, msg):
         self.logging.info(self.TAG + " " + msg)
@@ -95,7 +96,9 @@ class MainHandler(cqplus.CQPlusHandler):
             if not _pipeline.process(msg, from_qq, from_group):
                 should_process_command = False
                 break
+        # pipeline end #
 
+        # command start#
         if should_process_command:
             # 如果是 % 开头的消息，认为是命令消息，否则就是普通的消息，走正常的pipeline进行处理
             if msg.startswith("%"):
@@ -107,6 +110,8 @@ class MainHandler(cqplus.CQPlusHandler):
                 else:
                     try:
                         command_instance.process(from_group, from_qq, command_list)
-                    except:
-                        self.api.send_group_msg(from_group, utils.build_at_msg(from_qq) + "\nUnknown Error!")
-
+                    except Exception as e:
+                        tbe = traceback.TracebackException(*sys.exc_info())
+                        full_err = ''.join(tbe.format())
+                        self.api.send_group_msg(from_group, utils.build_at_msg(from_qq) + "\nUnknown Error! e: " + str(e) + "\n" + full_err)
+        # command end #

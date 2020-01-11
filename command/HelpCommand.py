@@ -24,6 +24,7 @@ help_msg = """BotXYZ version 1.0.1
 --- 普通命令 ---
 %help - 显示这个页面
 %attack - 攻击某个玩家，格式：%attack @目标 时长(分钟)
+%game - 游戏命令
 ---------------
 
 --- Admin命令 ---
