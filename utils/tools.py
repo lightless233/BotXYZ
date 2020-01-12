@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 """
-    __init__.py
+    tools
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     $END$
@@ -13,4 +13,19 @@
     :copyright: Copyright (c) 2017-2020 lightless. All rights reserved
 """
 
-from .BaseData import BaseData, PropertyCovertValue
+import random
+
+
+class PropertiesTools:
+
+    @staticmethod
+    def d20():
+        return random.randint(1, 20)
+
+    @staticmethod
+    def d4():
+        return random.randint(1, 4)
+
+    @staticmethod
+    def calc_properties(level, str, vit, agi):
+        pass

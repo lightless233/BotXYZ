@@ -17,16 +17,19 @@ from typing import List
 from cqplus._api import CQPlusApi
 from cqplus._logging import CQPlusLogging
 
-from command.game.StatusSubCommand import StatusSubCommand
+from command.game.GameSubPtCommand import GameSubPtCommand
 from command.game.RegisterSubCommand import RegisterSubCommand
+from command.game.StatusSubCommand import StatusSubCommand
 from .._base import BaseCommand
 
 error_msg = """Unknown sub-command.
 sub-command list:
 
-%game register - register an player
-%game status - show my status
-%game attack - attack others, %game attack @qq [skill_name]
+%game register - 注册
+%game status - 展示玩家资料
+%game attack - FIRE! FIRE! FIRE! 格式：%game attack @qq [skill_name]
+%game pt - 分配点数。格式：%game pt STR 1
+%game rpt - 重置所有的点数。格式：%game rpt
 """
 
 
@@ -40,6 +43,7 @@ class GameCommand(BaseCommand):
         self.sub_command = {
             "register": RegisterSubCommand(self.api, self.logger),
             "status": StatusSubCommand(self.api, self.logger),
+            "pt": GameSubPtCommand(self.api, self.logger),
         }
 
     def process(self, from_group: int, from_qq: int, command_list: List[str]):
