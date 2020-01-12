@@ -1,2 +1,4 @@
+beautifulsoup4==4.8.2
 cqplus-sdk==1.0.7
 peewee==3.13.1
+soupsieve==1.9.5

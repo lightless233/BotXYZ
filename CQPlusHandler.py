@@ -22,7 +22,8 @@ import cqplus._api
 
 import constant
 import pipeline
-from command import BaseCommand, BanCommand, UnBanCommand, AttackCommand, ChangelogCommand, HelpCommand
+from command import (BaseCommand, BanCommand, UnBanCommand, AttackCommand, ChangelogCommand, HelpCommand,
+                     SecTodayCommand)
 from command.game.GameCommand import GameCommand
 from pipeline import BasePipeline
 from timer import (HPSPTimer, BaseTimer)
@@ -48,6 +49,7 @@ class MainHandler(cqplus.CQPlusHandler):
             "%unban": UnBanCommand(self.api, self.logging),
             "%attack": AttackCommand(self.api, self.logging),
             "%changelog": ChangelogCommand(self.api, self.logging),
+            "%news": SecTodayCommand(self.api, self.logging),
 
             "%game": GameCommand(self.api, self.logging),
         }

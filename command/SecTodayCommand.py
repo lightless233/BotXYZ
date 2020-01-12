@@ -12,22 +12,22 @@
     :license:   GPL-3.0, see LICENSE for more details.
     :copyright: Copyright (c) 2017-2020 lightless. All rights reserved
 """
+import datetime
+import re
 from typing import List, Dict, Tuple
+from urllib.request import Request, urlopen
 
-from ._base import BaseCommand
 from cqplus._api import CQPlusApi
 from cqplus._logging import CQPlusLogging
-import re
-from urllib.request import Request, urlopen
-import datetime
 
+from ._base import BaseCommand
 
-#{年月日: (更新的小时计数，[数据列表])}
+# {年月日: (更新的小时计数，[数据列表])}
 g_news_cache: Dict[str, Tuple[int, List[str]]] = {}
 
 
 class SecTodayCommand(BaseCommand):
-    
+
     def __init__(self, api: CQPlusApi, logger: CQPlusLogging):
         super(SecTodayCommand, self).__init__(api, logger)
         self.command_name = "%sectoday"
@@ -39,9 +39,9 @@ class SecTodayCommand(BaseCommand):
         hours = datetime.datetime.now().hour
         today_new = g_news_cache.get(date)
 
-        if today_new is None or (hours//4) != today_new[0]:
+        if today_new is None or (hours // 4) != today_new[0]:
             refresh_new = self.get_today_news_from_sectoday()
-            g_news_cache[date] = (hours//4, refresh_new)
+            g_news_cache[date] = (hours // 4, refresh_new)
             return refresh_new
         else:
             return today_new[1]
@@ -61,6 +61,7 @@ class SecTodayCommand(BaseCommand):
             title = re.search(r"<q>([\s\S]*?)</q>".encode("utf-8"), each.group())
             ret_list.append(title.group().decode("utf-8")[3:-4])
 
+        self.logger.info(f"{ret_list}")
         return ret_list
 
     def process(self, from_group: int, from_qq: int, command_list: List[str]):
