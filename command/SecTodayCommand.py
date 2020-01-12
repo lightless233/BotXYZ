@@ -59,7 +59,7 @@ class SecTodayCommand(BaseCommand):
             if "hours" not in date.group().decode("utf-8") and "小时" not in date.group().decode("utf-8"):
                 break
             title = re.search(r"<q>([\s\S]*?)</q>".encode("utf-8"), each.group())
-            link = re.search(r'href="(.*)"'.encode("utf-8"), each.group())
+            link = re.search(r'href="(.*?)"'.encode("utf-8"), each.group())
             ret_list.append(title.group().decode("utf-8")[3:-4] + " http://sec.today"+link.group().decode("utf-8")[6:-1])
 
         self.logger.info(f"{ret_list}")
