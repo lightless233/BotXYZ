@@ -20,7 +20,7 @@ from peewee import DoesNotExist
 
 from command import BaseCommand
 from models import db
-from models.PlayerModel import PlayerInfoModel
+from models.player import PlayerInfoModel
 from utils import utils
 
 

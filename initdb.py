@@ -12,17 +12,18 @@
     :license:   GPL-3.0, see LICENSE for more details.
     :copyright: Copyright (c) 2017-2020 lightless. All rights reserved
 """
-from peewee import DoesNotExist
 
 from models import db
 from models.ExpModel import ExpModel
-from models.PlayerModel import PlayerInfoModel
+from models.player import PlayerInfoModel
+from models.regain import RegainModel
 
 
 db.connect()
 db.create_tables([
     ExpModel,
     PlayerInfoModel,
+    RegainModel,
 ])
 
 for level in range(1, 50):

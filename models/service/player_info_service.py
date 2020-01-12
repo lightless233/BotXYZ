@@ -15,7 +15,7 @@
 from peewee import DoesNotExist
 
 from models import db
-from models.PlayerModel import PlayerInfoModel
+from models.player import PlayerInfoModel
 from utils.tools import PropertiesTools
 
 
@@ -58,4 +58,18 @@ class PlayerInfoService:
                 eva=new_props.get("eva"),
             ).where(PlayerInfoModel.qq == qq)
 
+            return query.execute()
+
+    def update_player_hp(self, qq, value):
+        with db:
+            query = PlayerInfoModel.update(
+                hp_current=PlayerInfoModel.hp_current + value
+            ).where(PlayerInfoModel.qq == qq)
+            return query.execute()
+
+    def update_player_sp(self, qq, value):
+        with db:
+            query = PlayerInfoModel.update(
+                sp_current=PlayerInfoModel.sp_current + value
+            ).where(PlayerInfoModel.qq == qq)
             return query.execute()
