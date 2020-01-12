@@ -97,8 +97,8 @@ class StatusSubCommand(BaseCommand):
                     f"SP: {pc_result.sp_current} / {pc_result.sp_max}\n" \
                     f"ATK: {pc_result.atk}\n" \
                     f"DEF: {pc_result.defe}\n" \
-                    f"CRI: {self.convert(pc_result.cri * 100, 1)}%\n" \
-                    f"HIT: {self.convert(pc_result.hit * 100, 1)}%\n" \
-                    f"EVA: {self.convert(pc_result.eva * 100, 1)}%\n" \
+                    f"CRI: {self.convert(pc_result.cri * 100, 2)}%\n" \
+                    f"HIT: {self.convert(pc_result.hit * 100, 2)}%\n" \
+                    f"EVA: {self.convert(pc_result.eva * 100, 2)}%\n" \
                     f"=========="
         self.send_msg(utils.build_at_msg(from_qq) + "\n" + data_msg)
