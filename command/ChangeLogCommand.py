@@ -19,8 +19,11 @@ from cqplus._logging import CQPlusLogging
 
 from command import BaseCommand
 
+changelog = """v1.0.2
+- 增加 %news 功能 (Author: WinFog)
+- 增加 %game 功能 (under developing)
 
-changelog = """v1.0.1
+v1.0.1
 - 削弱%attack时的见切机制
 - 削弱%attack时的debuff效果
 - 程序框架重构，方便多人开发
