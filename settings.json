@@ -1,0 +1,7 @@
+{
+    "DEBUG": true,
+    "RUNTIME_NAME": "Python37",
+    "TIMER": {
+        "hp_sp_timer": 30000
+    }
+}

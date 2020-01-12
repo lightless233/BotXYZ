@@ -14,6 +14,7 @@
 """
 import re
 import sys
+import threading
 import traceback
 from typing import List, Dict, Optional
 
@@ -21,11 +22,14 @@ import cqplus._api
 
 import constant
 import pipeline
-from command import BaseCommand, BanCommand, UnBanCommand, AttackCommand, ChangelogCommand
-from command import HelpCommand
+from command import (BaseCommand, BanCommand, UnBanCommand, AttackCommand, ChangelogCommand, HelpCommand,
+                     SecTodayCommand)
 from command.game.GameCommand import GameCommand
 from pipeline import BasePipeline
+from timer import (HPSPTimer, BaseTimer)
 from utils import utils
+
+g_lock: threading.Lock = threading.Lock()
 
 
 class MainHandler(cqplus.CQPlusHandler):
@@ -45,26 +49,46 @@ class MainHandler(cqplus.CQPlusHandler):
             "%unban": UnBanCommand(self.api, self.logging),
             "%attack": AttackCommand(self.api, self.logging),
             "%changelog": ChangelogCommand(self.api, self.logging),
+            "%news": SecTodayCommand(self.api, self.logging),
 
             "%game": GameCommand(self.api, self.logging),
+        }
+
+        self.timers: Dict[str, BaseTimer] = {
+            "hp_sp_timer": HPSPTimer(self.api, self.logging),
         }
 
     def info(self, msg):
         self.logging.info(self.TAG + " " + msg)
 
     def handle_event(self, event, params):
-        self.logging.info(f"{self.TAG} receive event: {event}, params: {params}")
+        global g_lock
 
-        if event == "on_group_msg":
-            self.on_group_msg(params)
-        elif event == "on_enable":
-            self.on_enable(params)
-        else:
-            self.logging.info(f"{self.TAG} No handler for this event, {event}")
+        with g_lock:
+            self.logging.info(f"{self.TAG} receive event: {event}, params: {params}")
+
+            if event == "on_group_msg":
+                self.on_group_msg(params)
+            elif event == "on_enable":
+                self.on_enable(params)
+            elif event == "on_timer":
+                self.on_timer(params)
+            else:
+                self.logging.info(f"{self.TAG} No handler for this event, {event}")
 
     def on_enable(self, params):
         self.info(self.api.get_app_directory() + ", bot start!")
         self.info(f"params: {params}")
+
+    def on_timer(self, params):
+        self.info(f"on_timer called. params: {params}")
+        timer_name = params.get("name")
+        try:
+            self.timers.get(timer_name).process()
+        except Exception as e:
+            tbe = traceback.TracebackException(*sys.exc_info())
+            full_err = ''.join(tbe.format())
+            self.logging.error(f"Timer process error. {str(e)}\n{full_err}")
 
     def on_group_msg(self, params):
         """
@@ -113,5 +137,6 @@ class MainHandler(cqplus.CQPlusHandler):
                     except Exception as e:
                         tbe = traceback.TracebackException(*sys.exc_info())
                         full_err = ''.join(tbe.format())
-                        self.api.send_group_msg(from_group, utils.build_at_msg(from_qq) + "\nUnknown Error! e: " + str(e) + "\n" + full_err)
+                        self.api.send_group_msg(from_group, utils.build_at_msg(from_qq) + "\nUnknown Error! e: " + str(
+                            e) + "\n" + full_err)
         # command end #

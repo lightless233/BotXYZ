@@ -18,7 +18,7 @@ from cqplus._api import CQPlusApi
 from cqplus._logging import CQPlusLogging
 
 from command import BaseCommand
-from models.PlayerModel import PlayerInfoModel
+from models.player import PlayerInfoModel
 from models.service import PlayerInfoService
 from utils import utils
 

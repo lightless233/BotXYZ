@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 """
-    ExpModel
+    test_db.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     $END$
@@ -12,14 +12,15 @@
     :license:   GPL-3.0, see LICENSE for more details.
     :copyright: Copyright (c) 2017-2020 lightless. All rights reserved
 """
-from peewee import IntegerField
 
-from . import BaseModel
+from models.player import PlayerInfoModel
 
+players = PlayerInfoModel.select().where(
+    PlayerInfoModel.sp_max != PlayerInfoModel.sp_current,
+    PlayerInfoModel.hp_max != PlayerInfoModel.hp_current
+).dicts()
 
-class ExpModel(BaseModel):
-    class Meta:
-        table_name = "xyz_exp"
+print(len(players))
 
-    level = IntegerField()
-    exp = IntegerField()
+for player in players:
+    print(player)

@@ -20,7 +20,7 @@ from peewee import DoesNotExist
 
 from command import BaseCommand
 from models import db
-from models.PlayerModel import PlayerInfoModel
+from models.player import PlayerInfoModel
 from utils import utils
 
 
@@ -54,12 +54,16 @@ class StatusSubCommand(BaseCommand):
                 target_type = "NICKNAME"
             else:
                 target_type = "QQ"
+                target_pc = result
 
         except IndexError:
             # 没有指定参数，查看自己的数据
             target_pc = from_qq
             target_type = "QQ"
             show_self = True
+
+        # 打一下log
+        self.logger.info(f"[{self.command_name}] target_pc:{target_pc}, target_type: {target_type}")
 
         # 开始查询数据
         with db:
@@ -97,8 +101,8 @@ class StatusSubCommand(BaseCommand):
                     f"SP: {pc_result.sp_current} / {pc_result.sp_max}\n" \
                     f"ATK: {pc_result.atk}\n" \
                     f"DEF: {pc_result.defe}\n" \
-                    f"CRI: {self.convert(pc_result.cri, 1)}%\n" \
-                    f"HIT: {self.convert(pc_result.hit, 1)}%\n" \
-                    f"EVA: {self.convert(pc_result.eva, 1)}%\n" \
+                    f"CRI: {self.convert(pc_result.cri * 100, 2)}%\n" \
+                    f"HIT: {self.convert(pc_result.hit * 100, 2)}%\n" \
+                    f"EVA: {self.convert(pc_result.eva * 100, 2)}%\n" \
                     f"=========="
         self.send_msg(utils.build_at_msg(from_qq) + "\n" + data_msg)
