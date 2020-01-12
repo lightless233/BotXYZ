@@ -14,6 +14,7 @@
 """
 import re
 import sys
+import threading
 import traceback
 from typing import List, Dict, Optional
 
@@ -21,11 +22,12 @@ import cqplus._api
 
 import constant
 import pipeline
-from command import BaseCommand, BanCommand, UnBanCommand, AttackCommand, ChangelogCommand
-from command import HelpCommand
+from command import BaseCommand, BanCommand, UnBanCommand, AttackCommand, ChangelogCommand, HelpCommand
 from command.game.GameCommand import GameCommand
 from pipeline import BasePipeline
 from utils import utils
+
+g_lock: threading.Lock = threading.Lock()
 
 
 class MainHandler(cqplus.CQPlusHandler):
@@ -53,14 +55,17 @@ class MainHandler(cqplus.CQPlusHandler):
         self.logging.info(self.TAG + " " + msg)
 
     def handle_event(self, event, params):
-        self.logging.info(f"{self.TAG} receive event: {event}, params: {params}")
+        global g_lock
 
-        if event == "on_group_msg":
-            self.on_group_msg(params)
-        elif event == "on_enable":
-            self.on_enable(params)
-        else:
-            self.logging.info(f"{self.TAG} No handler for this event, {event}")
+        with g_lock:
+            self.logging.info(f"{self.TAG} receive event: {event}, params: {params}")
+
+            if event == "on_group_msg":
+                self.on_group_msg(params)
+            elif event == "on_enable":
+                self.on_enable(params)
+            else:
+                self.logging.info(f"{self.TAG} No handler for this event, {event}")
 
     def on_enable(self, params):
         self.info(self.api.get_app_directory() + ", bot start!")
@@ -113,5 +118,6 @@ class MainHandler(cqplus.CQPlusHandler):
                     except Exception as e:
                         tbe = traceback.TracebackException(*sys.exc_info())
                         full_err = ''.join(tbe.format())
-                        self.api.send_group_msg(from_group, utils.build_at_msg(from_qq) + "\nUnknown Error! e: " + str(e) + "\n" + full_err)
+                        self.api.send_group_msg(from_group, utils.build_at_msg(from_qq) + "\nUnknown Error! e: " + str(
+                            e) + "\n" + full_err)
         # command end #
