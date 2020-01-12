@@ -12,7 +12,7 @@
     :license:   GPL-3.0, see LICENSE for more details.
     :copyright: Copyright (c) 2017-2020 lightless. All rights reserved
 """
-from peewee import BigIntegerField, IntegerField, CharField
+from peewee import BigIntegerField, IntegerField, CharField, FloatField
 
 from data.base_data import BaseData
 from . import BaseModel
@@ -46,6 +46,6 @@ class PlayerInfoModel(BaseModel):
     sp_current = IntegerField(default=BaseData.BASE_SP)
     atk = IntegerField(default=BaseData.BASE_ATK)
     defe = IntegerField(default=BaseData.BASE_DEF)
-    cri = IntegerField(default=BaseData.BASE_CRI)
-    hit = IntegerField(default=BaseData.BASE_HIT)
-    eva = IntegerField(default=BaseData.BASE_EVA)
+    cri = FloatField(default=BaseData.BASE_CRI)
+    hit = FloatField(default=BaseData.BASE_HIT)
+    eva = FloatField(default=BaseData.BASE_EVA)

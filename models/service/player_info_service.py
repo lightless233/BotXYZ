@@ -16,6 +16,7 @@ from peewee import DoesNotExist
 
 from models import db
 from models.PlayerModel import PlayerInfoModel
+from utils.tools import PropertiesTools
 
 
 class PlayerInfoService:
@@ -46,5 +47,15 @@ class PlayerInfoService:
                     .where(PlayerInfoModel.qq == qq)
             else:
                 return None
+            query.execute()
+
+            # 一级属性更新完成，计算二级属性
+            pc: PlayerInfoModel = self.get_player_info_by_qq(qq)
+            new_props = PropertiesTools.calc_properties(pc.level, pc.base_str, pc.base_vit, pc.base_agi)
+            query = PlayerInfoModel.update(
+                hp_max=new_props.get("hp"), sp_max=new_props.get("sp"), atk=new_props.get("atk"),
+                defe=new_props.get("def"), cri=new_props.get("cri"), hit=new_props.get("hit"),
+                eva=new_props.get("eva"),
+            ).where(PlayerInfoModel.qq == qq)
 
             return query.execute()
