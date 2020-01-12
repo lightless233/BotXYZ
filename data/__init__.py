@@ -13,4 +13,4 @@
     :copyright: Copyright (c) 2017-2020 lightless. All rights reserved
 """
 
-from .BaseData import BaseData, PropertyCovertValue
+from .base_data import BaseData, PropertyCovertValue

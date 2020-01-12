@@ -14,7 +14,7 @@
 """
 from peewee import BigIntegerField, IntegerField, CharField
 
-from data.BaseData import BaseData
+from data.base_data import BaseData
 from . import BaseModel
 
 
