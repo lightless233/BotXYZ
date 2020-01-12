@@ -54,12 +54,16 @@ class StatusSubCommand(BaseCommand):
                 target_type = "NICKNAME"
             else:
                 target_type = "QQ"
+                target_pc = result
 
         except IndexError:
             # 没有指定参数，查看自己的数据
             target_pc = from_qq
             target_type = "QQ"
             show_self = True
+
+        # 打一下log
+        self.logger.info(f"[{self.command_name}] target_pc:{target_pc}, target_type: {target_type}")
 
         # 开始查询数据
         with db:
