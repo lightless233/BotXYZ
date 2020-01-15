@@ -15,3 +15,4 @@
 
 from ._base import BaseTimer
 from .hp_sp_timer import HPSPTimer
+from .sec_today_news_timer import SecTodayNewsTimer

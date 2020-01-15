@@ -26,5 +26,5 @@ class NewsModel(BaseModel):
     title = TextField()
     url = TextField()
     has_send = IntegerField(default=0)
-    created_time = DateTimeField(default=datetime.datetime.now())
-    updated_time = DateTimeField(default=datetime.datetime.now())
+    created_time = DateTimeField(default=datetime.datetime.now)
+    updated_time = DateTimeField(default=datetime.datetime.now)

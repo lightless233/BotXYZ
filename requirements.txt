@@ -1,4 +1,9 @@
 beautifulsoup4==4.8.2
+certifi==2019.11.28
+chardet==3.0.4
 cqplus-sdk==1.0.7
+idna==2.8
 peewee==3.13.1
+requests==2.22.0
 soupsieve==1.9.5
+urllib3==1.25.7

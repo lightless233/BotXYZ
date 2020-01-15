@@ -2,6 +2,7 @@
     "DEBUG": true,
     "RUNTIME_NAME": "Python37",
     "TIMER": {
-        "hp_sp_timer": 30000
+        "hp_sp_timer": 30000,
+        "sec_today_news_timer": 300000
     }
 }

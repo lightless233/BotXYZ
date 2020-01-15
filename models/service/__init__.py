@@ -14,3 +14,4 @@
 """
 
 from .player_info_service import PlayerInfoService
+from .news_service import NewsService

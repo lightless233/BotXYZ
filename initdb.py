@@ -17,6 +17,7 @@ from models import db
 from models.ExpModel import ExpModel
 from models.player import PlayerInfoModel
 from models.regain import RegainModel
+from models.news import NewsModel
 
 
 db.connect()
@@ -24,9 +25,10 @@ db.create_tables([
     ExpModel,
     PlayerInfoModel,
     RegainModel,
+    NewsModel,
 ])
 
-for level in range(1, 50):
-    exp = (level - 1) * 20 + 100
-    ExpModel.create(level=level, exp=exp)
+# for level in range(1, 50):
+#     exp = (level - 1) * 20 + 100
+#     ExpModel.create(level=level, exp=exp)
 

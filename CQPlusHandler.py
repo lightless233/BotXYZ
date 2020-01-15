@@ -26,7 +26,7 @@ from command import (BaseCommand, BanCommand, UnBanCommand, AttackCommand, Chang
                      SecTodayCommand)
 from command.game.GameCommand import GameCommand
 from pipeline import BasePipeline
-from timer import (HPSPTimer, BaseTimer)
+from timer import (HPSPTimer, BaseTimer, SecTodayNewsTimer)
 from utils import utils
 
 g_lock: threading.Lock = threading.Lock()
@@ -56,6 +56,7 @@ class MainHandler(cqplus.CQPlusHandler):
 
         self.timers: Dict[str, BaseTimer] = {
             "hp_sp_timer": HPSPTimer(self.api, self.logging),
+            "sec_today_news_timer": SecTodayNewsTimer(self.api, self.logging)
         }
 
     def info(self, msg):

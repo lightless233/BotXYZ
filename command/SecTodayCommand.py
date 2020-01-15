@@ -20,6 +20,7 @@ from urllib.request import Request, urlopen
 from cqplus._api import CQPlusApi
 from cqplus._logging import CQPlusLogging
 
+from models.service import NewsService
 from ._base import BaseCommand
 
 # {年月日: (更新的小时计数，[数据列表])}
@@ -60,10 +61,25 @@ class SecTodayCommand(BaseCommand):
                 break
             title = re.search(r"<q>([\s\S]*?)</q>".encode("utf-8"), each.group())
             link = re.search(r'href="(.*?)"'.encode("utf-8"), each.group())
-            ret_list.append(title.group().decode("utf-8")[3:-4] + " http://sec.today"+link.group().decode("utf-8")[6:-1])
+            ret_list.append(
+                title.group().decode("utf-8")[3:-4] + " http://sec.today" + link.group().decode("utf-8")[6:-1])
 
         self.logger.info(f"{ret_list}")
         return ret_list
 
     def process(self, from_group: int, from_qq: int, command_list: List[str]):
-        self.api.send_group_msg(group_id=from_group, msg="\n".join(self.get_today_news()))
+        # self.api.send_group_msg(group_id=from_group, msg="\n".join(self.get_today_news()))
+        # 从db中取出今天的新闻
+        news_service = NewsService()
+
+        all_news = news_service.get_today_news()
+        if len(all_news == 0):
+            self.api.send_group_msg(self.from_group, "今天暂无新闻！")
+        else:
+            full_message = ""
+            for news in all_news:
+                title = news.title
+                url = news.url
+                full_message += title + "\n" + url + "\n\n"
+
+            self.api.send_group_msg(self.from_group, full_message)
