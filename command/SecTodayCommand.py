@@ -73,8 +73,8 @@ class SecTodayCommand(BaseCommand):
         news_service = NewsService()
 
         all_news = news_service.get_today_news()
-        if len(all_news == 0):
-            self.api.send_group_msg(self.from_group, "今天暂无新闻！")
+        if len(all_news) == 0:
+            self.api.send_group_msg(group_id=from_group, msg="今天暂无新闻！")
         else:
             full_message = ""
             for news in all_news:
@@ -82,4 +82,4 @@ class SecTodayCommand(BaseCommand):
                 url = news.url
                 full_message += title + "\n" + url + "\n\n"
 
-            self.api.send_group_msg(self.from_group, full_message)
+            self.api.send_group_msg(from_group, full_message)

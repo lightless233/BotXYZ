@@ -39,8 +39,10 @@ class SecTodayNewsTimer(BaseTimer):
         for x in articles:
             tag_a = x.find_all("a")[0]
             href = tag_a["href"]
-            full_url = self.target_url + href[1:]
+            full_url = "https://sec.today/" + href[1:]
             title = tag_a.text
+
+            self.logger.info("href: " + href + ", title: " + title)
 
             # 检查这个新闻有没有入过库了
             # 如果没有，就入库
@@ -59,5 +61,5 @@ class SecTodayNewsTimer(BaseTimer):
 
     def send_and_update(self, news: NewsModel):
         message = news.title + "\n" + news.url
-        self.api.send_group_msg("672534169", message)
+        self.api.send_group_msg(672534169, message)
         self.news_service.update_send(news.title, news.url, 1)
