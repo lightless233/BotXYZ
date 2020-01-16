@@ -13,6 +13,9 @@
     :copyright: Copyright (c) 2017-2020 lightless. All rights reserved
 """
 
+DATABASE_PATH = r"C:\xyz.db"
+
+
 class BaseData:
     BASE_HP = 50
     BASE_SP = 10

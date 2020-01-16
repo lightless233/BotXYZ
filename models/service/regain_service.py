@@ -29,7 +29,7 @@ class RegainService:
         self.sp_time = 5 * 60
 
     def update_next_hp_time(self, qq):
-        with db:
+        with db.connection_context():
             next_ts = time.time() + self.hp_time
             next_dt = datetime.fromtimestamp(next_ts)
             query = RegainModel.update(hp_next_time=next_dt).where(RegainModel.qq == qq)
@@ -37,7 +37,7 @@ class RegainService:
             return query.execute()
 
     def update_next_sp_time(self, qq):
-        with db:
+        with db.connection_context():
             next_ts = time.time() + self.sp_time
             next_dt = datetime.fromtimestamp(next_ts)
             query = RegainModel.update(sp_next_time=next_dt).where(RegainModel.qq == qq)

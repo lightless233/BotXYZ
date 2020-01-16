@@ -26,14 +26,14 @@ class NewsService:
         super(NewsService, self).__init__()
 
     def get_news_by_url(self, url):
-        with db:
+        with db.connection_context():
             try:
                 return NewsModel.get(NewsModel.url == url)
             except DoesNotExist:
                 return None
 
     def save(self, title, url, has_send=0):
-        with db:
+        with db.connection_context():
             return NewsModel.create(
                 url=url,
                 title=title,
@@ -41,7 +41,7 @@ class NewsService:
             )
 
     def update_send(self, title, url, has_send):
-        with db:
+        with db.connection_context():
             query = NewsModel.update(has_send=has_send) \
                 .where(NewsModel.title == title, NewsModel.url == url)
 
@@ -51,7 +51,7 @@ class NewsService:
 
         now = datetime.datetime.now()
 
-        with db:
+        with db.connection_context():
             try:
                 return NewsModel.select().where(
                     (NewsModel.created_time.year == now.year)

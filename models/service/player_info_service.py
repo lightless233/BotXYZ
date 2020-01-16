@@ -25,14 +25,14 @@ class PlayerInfoService:
         super(PlayerInfoService, self).__init__()
 
     def get_player_info_by_qq(self, qq):
-        with db:
+        with db.connection_context():
             try:
                 return PlayerInfoModel.get(PlayerInfoModel.qq == qq)
             except DoesNotExist:
                 return None
 
     def update_player_prop(self, prop, qq, pt):
-        with db:
+        with db.connection_context():
             if prop == "STR":
                 query = PlayerInfoModel \
                     .update(base_str=PlayerInfoModel.base_str + pt, rest_pt=PlayerInfoModel.rest_pt - pt) \
@@ -61,14 +61,14 @@ class PlayerInfoService:
             return query.execute()
 
     def update_player_hp(self, qq, value):
-        with db:
+        with db.connection_context():
             query = PlayerInfoModel.update(
                 hp_current=PlayerInfoModel.hp_current + value
             ).where(PlayerInfoModel.qq == qq)
             return query.execute()
 
     def update_player_sp(self, qq, value):
-        with db:
+        with db.connection_context():
             query = PlayerInfoModel.update(
                 sp_current=PlayerInfoModel.sp_current + value
             ).where(PlayerInfoModel.qq == qq)

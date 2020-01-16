@@ -14,7 +14,9 @@
 """
 from peewee import SqliteDatabase, Model
 
-db = SqliteDatabase("xyz.db")
+from data.base_data import DATABASE_PATH
+
+db = SqliteDatabase(DATABASE_PATH, autoconnect=False)
 
 
 class BaseModel(Model):

@@ -20,6 +20,7 @@ from urllib.request import Request, urlopen
 from cqplus._api import CQPlusApi
 from cqplus._logging import CQPlusLogging
 
+from models import db
 from models.service import NewsService
 from ._base import BaseCommand
 
@@ -73,7 +74,9 @@ class SecTodayCommand(BaseCommand):
         news_service = NewsService()
 
         all_news = news_service.get_today_news()
-        if len(all_news) == 0:
+        with db.connection_context():
+            news_count = len(all_news)
+        if news_count == 0:
             self.api.send_group_msg(group_id=from_group, msg="今天暂无新闻！")
         else:
             full_message = ""
