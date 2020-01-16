@@ -38,10 +38,12 @@ class ThumbBanPipeline(BasePipeline):
 
     def process(self, msg: str, from_qq: int, from_group: int) -> bool:
         clean_msg = msg.replace(" ", "")
+        thumb_count = 0
         for thumb in self.THUMBS_ID:
             if thumb in clean_msg:
-                self.api.set_group_ban(group_id=from_group, user_id=from_qq, duration=120)
-                self.api.send_group_msg(group_id=from_group, msg="发现大拇指！QNMD！\n" + utils.build_at_msg(from_qq))
-                return False
-
+                thumb_count += clean_msg.count(thumb)
+        if thumb_count > 0:
+            self.api.set_group_ban(group_id=from_group, user_id=from_qq, duration=120 * thumb_count)
+            self.api.send_group_msg(group_id=from_group, msg="发现大拇指！QNMD！\n" + utils.build_at_msg(from_qq))
+            return False
         return True
